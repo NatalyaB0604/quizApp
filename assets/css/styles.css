@@ -1,0 +1,67 @@
+@import url(https://fonts.googleapis.com/css?family=Dela+Gothic+One:regular);
+
+:root {
+--primary: #37369e;
+--secondary: #ff95da;
+--bg1: #37369e;
+--bg2: #ffffff;
+--accent: #d1f439;
+--button-hover:#afd83d;
+--text-dark: #24227a;
+--text-light: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Dela Gothic One", sans-serif;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  padding: 0;
+}
+
+form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+button,
+input[type="submit"] {
+  font-family: "Dela Gothic One", sans-serif;
+  background-color: var(--accent);
+  color: var(--text-dark);
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 20px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover,
+input[type="submit"]:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}

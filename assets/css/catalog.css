@@ -1,0 +1,138 @@
+.catalog-section {
+  margin: 15px;
+  justify-content: center;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  background-color: var(--bg2);
+  border-radius: 10px;
+}
+
+.catalog-title {
+  font-family: "Dela Gothic One", sans-serif;
+  font-size: 24px;
+  margin: 40px 20px;
+  color: var(--primary);
+}
+
+.catalog-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.catalog-item {
+  background-color: var(--bg2);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px var(--primary);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  padding-bottom: 70px;
+}
+
+.catalog-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.catalog-date {
+  color: var(--text-dark);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.catalog-author {
+  color: var(--text-dark);
+  font-size: 14px;
+  font-weight: 500;
+  background-color: var(--secondary);
+  padding: 4px 12px;
+  border-radius: 15px;
+}
+
+.catalog-name {
+  font-size: 18px;
+  color: var(--primary);
+  margin: 0 0 15px 0;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.catalog-description {
+  color: var(--text-dark);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+  flex-grow: 1;
+}
+
+.catalog-play-btn {
+  background-color: var(--accent);
+  color: var(--text-dark);
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.3s, transform 0.2s;
+  font-weight: 500;
+  display: inline-block;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: auto;
+}
+
+.catalog-play-btn:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1200px) {
+  .catalog-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .catalog-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .section1 {
+    padding: 40px 15px;
+    margin: 10px;
+  }
+
+  .section2 {
+    padding: 30px 15px;
+  }
+
+  .catalog-list {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .catalog-item {
+    padding: 20px;
+    padding-bottom: 70px;
+  }
+
+  .catalog-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

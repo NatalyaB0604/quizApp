@@ -1,0 +1,38 @@
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.section-play {
+  width: 100%;
+  padding: 60px 20px;
+  border-radius: 20px;
+  background-color: var(--bg1);
+  text-align: center;
+  color: var(--secondary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.section-play a {
+  color: var(--accent);
+}
+
+.create-quiz-text {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 16px;
+  color: var(--text-dark);
+}
+
+.create-quiz-text a {
+  color: var(--primary);
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.create-quiz-text a:hover {
+  color: var(--secondary);
+}

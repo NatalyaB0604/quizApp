@@ -1,0 +1,165 @@
+.account-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 40px;
+  flex-wrap: wrap;
+}
+
+.account-sidebar {
+  background: var(--bg2);
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  width: 250px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 50%;
+  font-size: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 15px;
+}
+
+.sidebar-menu {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-menu a {
+  text-decoration: none;
+  color: var(--text-dark);
+  padding: 10px;
+  border-radius: 20px;
+  background: #f6f6f6;
+}
+
+.sidebar-menu a.active,
+.sidebar-menu a:hover {
+  background: var(--secondary);
+  color: var(--text-dark);
+}
+
+.account-content {
+  flex: 1;
+  text-align: center;
+  max-width: 600px;
+  background: var(--bg2);
+  padding: 20px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: var(--primary);
+}
+
+.input-group {
+  position: relative;
+  min-height: 75px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+.input-group input.error-field {
+  border: 1px solid rgb(255, 50, 50) !important;
+}
+
+.edit-icon {
+  position: absolute;
+  right: 12px;
+  top: 42%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.edit-icon:hover {
+  opacity: 1;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 42%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+}
+
+.field-error {
+  color: red;
+  font-size: 12px;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(-3px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-weight: 300;
+}
+
+.field-error.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cancel-btn {
+  background-color: #f3f3f3;
+  padding: 10px 20px;
+  max-height: 43px;
+  color: #333;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 15px;
+}
+
+.cancel-btn:hover {
+  background-color: #e6e6e6;
+}
+
+input[type="submit"].update-btn {
+  width: auto;
+}
