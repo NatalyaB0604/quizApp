@@ -10,6 +10,7 @@ if (!$data) {
 
 $quiz_id = isset($data['quiz_id']) ? (int)$data['quiz_id'] : null;
 $score = isset($data['score']) ? (int)$data['score'] : 0;
+$time_spent = isset($data['time_spent']) ? (int)$data['time_spent'] : 0;
 $answers = $data['answers'] ?? [];
 
 if (!$quiz_id) {
@@ -23,6 +24,7 @@ if (!isset($_SESSION['guest_results'])) {
 
 $_SESSION['guest_results'][$quiz_id] = [
     'score' => $score,
+    'time_spent' => $time_spent,
     'answers' => $answers,
     'completed_at' => time()
 ];

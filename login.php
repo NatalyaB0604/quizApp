@@ -29,8 +29,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION["username"] = $user["username"];
         $_SESSION["role"] = $user["role"];
 
-        header("Location: profile.php");
-        exit;
+        /*header("Location: profile.php");
+        exit;*/
+
+        if (isset($_SESSION['redirect_after_login'])) {
+            $quiz_code = $_SESSION['redirect_after_login'];
+            unset($_SESSION['redirect_after_login']);
+            header("Location: start_quiz.php?code=" . urlencode($quiz_code));
+            exit;
+        } else {
+            header("Location: profile.php");
+            exit;
+        }
     } else {
         $_SESSION['error'] = "Неверный логин (Email) или пароль!";
         header("Location: login.php");
@@ -64,25 +74,13 @@ unset($_SESSION['login_value'], $_SESSION['password_value']);
             <h2>Вход</h2>
             <form method="POST" class="login-form" id="loginForm">
                 <div class="input-group">
-                    <input
-                        type="text"
-                        name="login"
-                        id="login"
-                        required
-                        placeholder="Имя пользователя (или Email)*"
-                        value="<?php echo htmlspecialchars($login_value); ?>"
-                    >
+                    <input type="text" name="login" id="login" required placeholder="Имя пользователя (или Email)*"
+                        value="<?php echo htmlspecialchars($login_value); ?>">
                 </div>
 
                 <div class="input-group password-group">
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        required
-                        placeholder="Пароль*"
-                        value="<?php echo htmlspecialchars($password_value); ?>"
-                    >
+                    <input type="password" name="password" id="password" required placeholder="Пароль*"
+                        value="<?php echo htmlspecialchars($password_value); ?>">
                     <img src="assets/images/visibility_off.svg" alt="Показать пароль" class="toggle-password"
                         id="togglePassword">
                 </div>
@@ -97,7 +95,7 @@ unset($_SESSION['login_value'], $_SESSION['password_value']);
     </main>
 
     <script>
-         const passwordInput = document.getElementById("password");
+        const passwordInput = document.getElementById("password");
         const toggleIcon = document.getElementById("togglePassword");
 
         if (toggleIcon && passwordInput) {
@@ -117,7 +115,7 @@ unset($_SESSION['login_value'], $_SESSION['password_value']);
             }, 100);
         <?php endif; ?>
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
             const login = document.getElementById('login').value.trim();
             const password = document.getElementById('password').value.trim();
 

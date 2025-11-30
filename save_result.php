@@ -12,7 +12,8 @@ if(!$data){ echo json_encode(['ok'=>false,'error'=>'no input']); exit; }
 $quiz_id = isset($data['quiz_id']) ? (int)$data['quiz_id'] : null;
 $user_id = isset($data['user_id']) ? (int)$data['user_id'] : null;
 $score = isset($data['score']) ? (int)$data['score'] : 0;
-$answers = $data['answers'] ?? []; // question_id => [answer_id,...]
+$time_spent = isset($data['time_spent']) ? (int)$data['time_spent'] : 0;
+$answers = $data['answers'] ?? [];
 
 if(!$user_id){
     echo json_encode(['ok'=>false,'saved'=>false,'message'=>'guest_not_saved']);
@@ -20,8 +21,8 @@ if(!$user_id){
 }
 
 try{
-    $stmt = $conn->prepare("INSERT INTO results (quiz_id,user_id,score) VALUES (?,?,?)");
-    $stmt->execute([$quiz_id,$user_id,$score]);
+    $stmt = $conn->prepare("INSERT INTO results (quiz_id,user_id,score,time_spent) VALUES (?,?,?,?)");
+    $stmt->execute([$quiz_id,$user_id,$score,$time_spent]);
     $result_id = $conn->lastInsertId();
 
     $ua_stmt = $conn->prepare("INSERT INTO user_answers (result_id, question_id, answer_id) VALUES (?,?,?)");

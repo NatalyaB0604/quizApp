@@ -11,6 +11,8 @@ if (!isset($_GET['code'])) {
 }
 
 $access_code = $_GET['code'];
+$_SESSION['redirect_after_login'] = $access_code;
+
 $stmt = $conn->prepare("
     SELECT q.*, u.username AS created_by_username
     FROM quizzes q
@@ -28,8 +30,26 @@ if (!$quiz) {
 $user_id = $_SESSION['user_id'] ?? 0;
 
 if (!$quiz['public'] && !$user_id) {
-    echo "<p>Приватная викторина, войдите.</p>";
+    echo '
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Доступ запрещен</title>
+    </head>
+    <body>
+        <script>
+            alert("Для доступа к приватной викторине авторизуйтесь.");
+            window.location.href = "login.php";
+        </script>
+    </body>
+    </html>';
     exit;
+}
+
+if ($user_id) {
+    unset($_SESSION['redirect_after_login']);
 }
 
 $questions_stmt = $conn->prepare("SELECT * FROM questions WHERE quiz_id=? ORDER BY position ASC");
@@ -46,11 +66,18 @@ foreach ($questions as &$q) {
 
 $total_time_seconds = $quiz['total_time'] ? ($quiz['total_time'] * 60) : 0;
 
+$has_start_date = !empty($quiz['start_date']);
+$auto_start = $quiz['auto_start'] ?? false;
+$show_modal_timer = $has_start_date;
+
 $quiz_json = json_encode([
     'quiz' => $quiz,
     'questions' => $quiz_data,
     'user_id' => $user_id,
-    'total_time_seconds' => $total_time_seconds
+    'total_time_seconds' => $total_time_seconds,
+    'has_start_date' => $has_start_date,
+    'auto_start' => $auto_start,
+    'show_modal_timer' => $show_modal_timer
 ]);
 
 ?>
@@ -79,9 +106,6 @@ $quiz_json = json_encode([
             </div>
 
             <div id="waiting-section" style="display:none;">
-                <p id="waiting-message">Ожидание старта викторины...</p>
-                <p>Начало через <span id="start-timer"></span> секунд</p>
-                <div id="online-users"></div>
             </div>
 
             <div id="question-section" style="display:none;">
@@ -95,7 +119,7 @@ $quiz_json = json_encode([
                         <button id="prev-btn" style="display:none;">← Назад</button>
                     </div>
                     <div class="nav-right">
-                        <button id="next-btn" disabled>Следующий вопрос</button>
+                        <button id="next-btn">Следующий вопрос</button>
                     </div>
                 </div>
             </div>
@@ -118,10 +142,24 @@ $quiz_json = json_encode([
                     echo 'Не ограничено';
                 }
                 ?></p>
+
+                <?php if ($show_modal_timer): ?>
+                    <div id="modal-timer-section">
+                        <p id="start-date-display"> Старт:
+                            <?php echo date('d.m.Y H:i:s', strtotime($quiz['start_date'])); ?></p>
+                        <div class="modal-timer" id="modal-timer-display">--:--:--</div>
+                        <?php if ($auto_start): ?>
+                            <p id="hint">Викторина начнется автоматически</p>
+                        <?php else: ?>
+                            <p id="hint">Кнопка "Начать" станет активной после отсчета</p>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+
                 <p>Создатель: <?php echo htmlspecialchars($quiz['created_by_username']); ?></p>
             </div>
             <div class="modal-buttons">
-                <button id="start-quiz-btn">Начать</button>
+                <button id="start-quiz-btn" <?php echo ($show_modal_timer) ? 'disabled' : ''; ?>>Начать</button>
                 <button id="exit-quiz-btn">Выход</button>
             </div>
         </div>
@@ -137,9 +175,6 @@ $quiz_json = json_encode([
 
         let totalTimeRemaining = quizData.total_time_seconds || 0;
 
-        const waitingSection = document.getElementById('waiting-section');
-        const startTimerEl = document.getElementById('start-timer');
-        const onlineUsersEl = document.getElementById('online-users');
         const questionSection = document.getElementById('question-section');
         const questionText = document.getElementById('question-text');
         const questionNumber = document.getElementById('question-number');
@@ -152,17 +187,21 @@ $quiz_json = json_encode([
         const modalOverlay = document.getElementById('modal-overlay');
         const startQuizBtn = document.getElementById('start-quiz-btn');
         const exitQuizBtn = document.getElementById('exit-quiz-btn');
+        const modalTimerDisplay = document.getElementById('modal-timer-display');
 
-        function fetchOnlineUsers() {
-            fetch('update_online.php?quiz=' + quizData.quiz.id)
-                .then(r => r.text())
-                .then(html => onlineUsersEl.innerHTML = html);
-        }
+        let modalTimerInterval;
 
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
             const secs = seconds % 60;
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function formatCountdown(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            return `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
         function startTotalTimer() {
@@ -186,49 +225,61 @@ $quiz_json = json_encode([
             }, 1000);
         }
 
-        function waitForStart() {
-            document.querySelector('.quiz-container').style.display = 'block';
-            document.getElementById('quiz-title').style.display = 'block';
-
-            let startTime = quizData.quiz.start_date ? new Date(quizData.quiz.start_date).getTime() : null;
-            let countdown = quizData.quiz.countdown_seconds || 0;
-
-            if (startTime) {
-                waitingSection.style.display = 'block';
-                let interval = setInterval(() => {
-                    let now = new Date().getTime();
-                    let diffSec = Math.max(0, Math.floor((startTime - now) / 1000));
-                    startTimerEl.innerText = diffSec;
-                    fetchOnlineUsers();
-                    if (diffSec <= 0) {
-                        clearInterval(interval);
-                        startQuiz();
-                    }
-                }, 1000);
-            } else if (countdown > 0) {
-                waitingSection.style.display = 'block';
-                let t = countdown;
-                startTimerEl.innerText = t;
-                let interval = setInterval(() => {
-                    t--;
-                    startTimerEl.innerText = t;
-                    fetchOnlineUsers();
-                    if (t <= 0) {
-                        clearInterval(interval);
-                        startQuiz();
-                    }
-                }, 1000);
-            } else {
-                startQuiz();
+        function startModalCountdown() {
+            if (!quizData.has_start_date) {
+                startQuizBtn.disabled = false;
+                startQuizBtn.classList.remove('btn-disabled');
+                return;
             }
+
+            const startTime = new Date(quizData.quiz.start_date).getTime();
+
+            function updateModalTimer() {
+                const now = new Date().getTime();
+                const timeUntilStart = Math.max(0, Math.floor((startTime - now) / 1000));
+
+                if (modalTimerDisplay) {
+                    modalTimerDisplay.textContent = formatCountdown(timeUntilStart);
+
+                    if (timeUntilStart <= 10) {
+                        modalTimerDisplay.classList.add('timer-warning');
+                    }
+                }
+
+                if (timeUntilStart <= 0) {
+                    clearInterval(modalTimerInterval);
+                    if (modalTimerDisplay) {
+                        modalTimerDisplay.textContent = '00:00:00';
+                    }
+
+                    if (quizData.auto_start) {
+                        setTimeout(() => {
+                            startQuizFromModal();
+                        }, 1000);
+                    } else {
+                        startQuizBtn.disabled = false;
+                        startQuizBtn.classList.remove('btn-disabled');
+                    }
+                } else {
+                    startQuizBtn.disabled = true;
+                    startQuizBtn.classList.add('btn-disabled');
+                }
+            }
+
+            updateModalTimer();
+            modalTimerInterval = setInterval(updateModalTimer, 1000);
+        }
+
+        function startQuizFromModal() {
+            modalOverlay.style.display = 'none';
+            startQuiz();
         }
 
         function startQuiz() {
-
             document.querySelector('.quiz-container').style.display = 'block';
             document.getElementById('quiz-title').style.display = 'block';
-            waitingSection.style.display = 'none';
             questionSection.style.display = 'block';
+            quizStartTime = new Date();
             startTotalTimer();
             showQuestion();
         }
@@ -266,15 +317,12 @@ $quiz_json = json_encode([
                     } else {
                         selectedAnswers[q.id] = [parseInt(input.value)];
                     }
-                    nextBtn.disabled = selectedAnswers[q.id].length === 0;
                 };
 
                 label.appendChild(input);
                 label.appendChild(document.createTextNode(a.answer_text));
                 answersForm.appendChild(label);
             });
-
-            nextBtn.disabled = selectedAnswers[q.id].length === 0;
         }
 
         function updateNavigationButtons() {
@@ -314,6 +362,9 @@ $quiz_json = json_encode([
                 clearInterval(totalTimer);
             }
 
+            const endTime = new Date();
+            timeSpent = Math.floor((endTime - quizStartTime) / 1000);
+
             score = 0;
             questions.forEach(q => {
                 const correct = q.answers.map(a => a.is_correct ? a.id : -1).filter(i => i >= 0);
@@ -329,6 +380,7 @@ $quiz_json = json_encode([
                         quiz_id: quizData.quiz.id,
                         user_id: quizData.user_id,
                         score: score,
+                        time_spent: timeSpent,
                         answers: selectedAnswers
                     })
                 }).then(() => {
@@ -341,6 +393,7 @@ $quiz_json = json_encode([
                     body: JSON.stringify({
                         quiz_id: quizData.quiz.id,
                         score: score,
+                        time_spent: timeSpent,
                         answers: selectedAnswers
                     })
                 }).then(response => response.json())
@@ -352,11 +405,19 @@ $quiz_json = json_encode([
 
         window.onload = () => {
             modalOverlay.style.display = 'flex';
+
+            if (quizData.show_modal_timer) {
+                startModalCountdown();
+            } else {
+                startQuizBtn.disabled = false;
+                startQuizBtn.classList.remove('btn-disabled');
+            }
         };
 
         startQuizBtn.onclick = () => {
-            modalOverlay.style.display = 'none';
-            waitForStart();
+            if (!startQuizBtn.disabled) {
+                startQuizFromModal();
+            }
         };
 
         exitQuizBtn.addEventListener('click', function () {

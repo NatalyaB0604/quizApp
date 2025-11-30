@@ -1,0 +1,129 @@
+.notifications-container {
+  max-width: none;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.notifications-header {
+  margin-bottom: 30px;
+}
+
+.notifications-title {
+  font-family: "Dela Gothic One", sans-serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: var(--primary);
+}
+
+.notifications-subtitle {
+  color: var(--text-dark);
+  margin-bottom: 20px;
+}
+
+.notifications-list-section {
+  margin-top: 20px;
+  background-color: var(--primary);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.notification-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  background-color: var(--bg2);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  gap: 15px;
+}
+
+.notification-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.notification-message {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-dark);
+  line-height: 1.4;
+}
+
+.notification-date {
+  font-size: 14px;
+  color: #666;
+}
+
+.notification-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.delete-btn:hover {
+  background-color: #dc35451a;
+  transform: none;
+}
+
+.action-btn img {
+  width: 30px;
+  height: 30px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  background-color: var(--bg2);
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.delete-all-section {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.delete-all-btn {
+  background-color: #f3f3f3;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-size: 16px;
+}
+
+.delete-all-btn:hover {
+  background-color: #e6e6e6;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .notification-item {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .notification-actions {
+    justify-self: end;
+  }
+}

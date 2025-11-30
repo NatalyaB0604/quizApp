@@ -26,8 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
     $is_public = isset($settings['is_public']) && $settings['is_public'] ? 1 : 0;
     $start_date = ($is_public || empty($settings['start_date'])) ? null : $settings['start_date'];
     $auto_start = $settings['auto_start'] ? 1 : 0;
-    $countdown_enabled = $settings['countdown_enabled'] ? 1 : 0;
-    $countdown_seconds = $countdown_enabled ? intval($settings['countdown_seconds'] ?? 0) : 0;
     $total_time = floatval($settings['total_time'] ?? 60);
 
     if (empty($title)) {
@@ -42,12 +40,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
     } while ($check->fetch());
 
     $stmt = $conn->prepare("
-        INSERT INTO quizzes (title, description, public, access_code, created_by, auto_start, countdown_enabled, countdown_seconds, total_time, start_date)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO quizzes (title, description, public, access_code, created_by, auto_start, total_time, start_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ");
-    $stmt->execute([$title, $description, $is_public, $access_code, $_SESSION['user_id'], $auto_start, $countdown_enabled, $countdown_seconds, $total_time, $start_date]);
+    $stmt->execute([$title, $description, $is_public, $access_code, $_SESSION['user_id'], $auto_start, $total_time, $start_date]);
 
     $quiz_id = $conn->lastInsertId();
+
+    if ($is_public) {
+        $mod_stmt = $conn->prepare("
+        INSERT INTO quiz_moderation (quiz_id, status, created_at)
+        VALUES (?, 'pending', NOW())
+    ");
+        $mod_stmt->execute([$quiz_id]);
+        $update_stmt = $conn->prepare("UPDATE quizzes SET moderation_status = 'pending' WHERE id = ?");
+        $update_stmt->execute([$quiz_id]);
+    } else {
+        $update_stmt = $conn->prepare("UPDATE quizzes SET moderation_status = 'approved' WHERE id = ?");
+        $update_stmt->execute([$quiz_id]);
+    }
 
     foreach ($questions as $position => $question) {
         $question_text = trim($question['text'] ?? '');
@@ -155,23 +166,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
 
                 <div class="settings-section">
                     <h3 class="quiz-subtitle">Настройки времени</h3>
-
-                    <div class="quiz-checkbox-group">
-                        <input type="checkbox" id="countdownEnabled" name="countdown_enabled">
-                        <label for="countdownEnabled">Показать обратный отсчет перед стартом</label>
-                    </div>
-
-                    <div class="time-settings-row">
-                        <div id="countdownDurationSetting" class="time-setting">
-                            <label for="countdownSeconds" class="required-field">Длительность отсчета (сек)</label>
-                            <input type="number" id="countdownSeconds" name="countdown_seconds" min="0" max="60"
-                                value="10" required>
-                        </div>
-
-                        <div class="time-setting">
-                            <label for="totalTime" class="required-field">Общее время на викторину (мин)</label>
-                            <input type="number" id="totalTime" name="total_time" min="0.5" max="180" step="0.5" placeholder="1, 2, 2.5..." required>
-                        </div>
+                    <div class="time-setting">
+                        <label for="totalTime" class="required-field">Общее время на викторину (мин)</label>
+                        <input type="number" id="totalTime" name="total_time" min="0.5" max="180" step="0.5"
+                            placeholder="1, 2, 2.5..." required>
                     </div>
                 </div>
 
@@ -284,21 +282,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
 
         function validateSettings() {
             const title = document.getElementById('quizTitle').value.trim();
-            const countdownEnabled = document.getElementById('countdownEnabled').checked;
-            const countdownSeconds = document.getElementById('countdownSeconds').value;
             const totalTime = parseFloat(document.getElementById('totalTime').value);
 
             if (!title) {
                 alert('Пожалуйста, введите название викторины');
                 document.getElementById('quizTitle').focus();
                 return;
-            }
-
-            if (countdownEnabled) {
-                if (countdownSeconds < 0 || countdownSeconds > 60) {
-                    alert('Длительность отсчета должна быть от 0 до 60 секунд');
-                    return;
-                }
             }
 
             if (isNaN(totalTime) || totalTime < 0.5 || totalTime > 180) {
@@ -342,17 +331,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
                 startTimeSettings.style.display = 'none';
             } else {
                 startTimeSettings.style.display = 'block';
-            }
-        }
-
-        function toggleCountdownDuration() {
-            const countdownEnabled = document.getElementById('countdownEnabled').checked;
-            const countdownDurationSetting = document.getElementById('countdownDurationSetting');
-
-            if (countdownEnabled) {
-                countdownDurationSetting.style.display = 'flex';
-            } else {
-                countdownDurationSetting.style.display = 'none';
             }
         }
 
@@ -728,11 +706,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
                 const result = await response.json();
 
                 if (result.success) {
-                    alert('Викторина успешно сохранена! Код доступа: ' + result.access_code);
+
+                    const isPublic = document.getElementById('isPublic').checked;
+
+                    if (isPublic) {
+                        alert('Публичная викторина успешно создана и отправлена на модерацию!');
+                    } else {
+                        alert('Приватная викторина успешно создана!');
+                    }
+
                     window.location.href = 'my_quizzes.php';
+
                 } else {
                     alert('Ошибка: ' + result.error);
                 }
+
             } catch (error) {
                 alert('Ошибка при сохранении: ' + error.message);
             }
@@ -745,8 +733,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
                 is_public: document.getElementById('isPublic').checked,
                 start_date: document.getElementById('startDate').value,
                 auto_start: document.getElementById('autoStart').checked,
-                countdown_enabled: document.getElementById('countdownEnabled').checked,
-                countdown_seconds: document.getElementById('countdownSeconds').value,
                 total_time: document.getElementById('totalTime').value
             };
         }
@@ -769,10 +755,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
                 toggleStartTimeSettings();
             });
 
-            document.getElementById('countdownEnabled').addEventListener('change', function () {
-                toggleCountdownDuration();
-            });
-
             document.querySelectorAll('.select-item').forEach(item => {
                 item.addEventListener('click', function () {
                     selectOption(this, event);
@@ -780,7 +762,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
             });
 
             toggleStartTimeSettings();
-            toggleCountdownDuration();
             saveCurrentQuestion();
             addQuestion();
         });

@@ -1,0 +1,138 @@
+.my-results-container {
+  max-width: none;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.results-header {
+  margin-bottom: 30px;
+}
+
+.results-title {
+  font-family: "Dela Gothic One", sans-serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: var(--primary);
+}
+
+.results-subtitle {
+  color: var(--text-dark);
+}
+
+.results-list-section {
+  margin-top: 30px;
+  background-color: var(--primary);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.result-item {
+  display: grid;
+  align-items: center;
+  background-color: var(--bg2);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+  grid-template-columns: 260px 1fr 150px 140px auto;
+}
+
+.result-item:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.result-start-info {
+  display: flex;
+  align-items: center;
+  color: var(--text-dark);
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.vertical-bar {
+  margin: 0 8px;
+  color: #aaa;
+}
+
+.result-title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-score,
+.result-time-spent {
+  font-size: 16px;
+  color: var(--text-dark);
+  text-align: center;
+}
+
+.result-score strong {
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.view-details-btn {
+  background-color: var(--accent);
+  color: var(--text-dark);
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.3s;
+  white-space: nowrap;
+  justify-self: center;
+}
+
+.view-details-btn:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px;
+  color: #666;
+  background-color: var(--bg2);
+  border-radius: 20px;
+  font-size: 18px;
+}
+
+@media (max-width: 992px) {
+  .result-item {
+    grid-template-columns: 220px 1fr 130px 120px auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .result-item {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .result-start-info {
+    justify-content: center;
+  }
+
+  .result-title {
+    text-align: center;
+    white-space: normal;
+  }
+
+  .view-details-btn {
+    width: 100%;
+    max-width: 280px;
+  }
+}

@@ -5,12 +5,10 @@ require_once __DIR__ . '/config.php';
 $db = new Database();
 $conn = $db->getConnection();
 
-// Получаем все публичные викторины
 $stmt = $conn->prepare("
-    SELECT q.id, q.title, q.description, q.access_code, q.created_at, q.created_by
-    FROM quizzes q
-    WHERE q.public = TRUE
-    ORDER BY q.created_at DESC
+    SELECT * FROM quizzes
+    WHERE public = 1 AND moderation_status = 'approved'
+    ORDER BY created_at DESC
 ");
 
 $stmt->execute();

@@ -57,12 +57,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'password' => $hashedPassword
         ]);
 
-        unset($_SESSION['register_username'], $_SESSION['register_email'],
-              $_SESSION['register_password'], $_SESSION['register_confirm']);
+        unset(
+            $_SESSION['register_username'],
+            $_SESSION['register_email'],
+            $_SESSION['register_password'],
+            $_SESSION['register_confirm']
+        );
 
         $_SESSION['success'] = "Регистрация прошла успешно!";
         header("Location: login.php");
         exit;
+
     } catch (PDOException $e) {
         $_SESSION['error'] = "Ошибка при регистрации: " . $e->getMessage();
         header("Location: register.php");
@@ -76,8 +81,12 @@ $password_value = $_SESSION['register_password'] ?? '';
 $confirm_value = $_SESSION['register_confirm'] ?? '';
 
 if (!isset($_SESSION['error'])) {
-    unset($_SESSION['register_username'], $_SESSION['register_email'],
-          $_SESSION['register_password'], $_SESSION['register_confirm']);
+    unset(
+        $_SESSION['register_username'],
+        $_SESSION['register_email'],
+        $_SESSION['register_password'],
+        $_SESSION['register_confirm']
+    );
 }
 ?>
 
@@ -101,28 +110,28 @@ if (!isset($_SESSION['error'])) {
             <h2>Регистрация</h2>
             <form method="POST" class="login-form" id="registerForm" novalidate>
                 <div class="input-group">
-                    <input type="text" name="username" id="username" required
-                           placeholder="Имя пользователя*" value="<?= htmlspecialchars($username_value) ?>">
+                    <input type="text" name="username" id="username" required placeholder="Имя пользователя*"
+                        value="<?= htmlspecialchars($username_value) ?>">
                     <div class="field-error" id="usernameError"></div>
                 </div>
 
                 <div class="input-group">
-                    <input type="email" name="email" id="email" required
-                           placeholder="Email*" value="<?= htmlspecialchars($email_value) ?>">
+                    <input type="email" name="email" id="email" required placeholder="Email*"
+                        value="<?= htmlspecialchars($email_value) ?>">
                     <div class="field-error" id="emailError"></div>
                 </div>
 
                 <div class="input-group password-group">
-                    <input type="password" name="password" id="password" required
-                           placeholder="Пароль*" value="<?= htmlspecialchars($password_value) ?>">
+                    <input type="password" name="password" id="password" required placeholder="Пароль*"
+                        value="<?= htmlspecialchars($password_value) ?>">
                     <img src="assets/images/visibility_off.svg" alt="Показать пароль" class="toggle-password"
                         id="togglePassword1">
                     <div class="field-error" id="passwordError"></div>
                 </div>
 
                 <div class="input-group password-group">
-                    <input type="password" name="confirm" id="confirm" required
-                           placeholder="Подтвердите пароль*" value="<?= htmlspecialchars($confirm_value) ?>">
+                    <input type="password" name="confirm" id="confirm" required placeholder="Подтвердите пароль*"
+                        value="<?= htmlspecialchars($confirm_value) ?>">
                     <img src="assets/images/visibility_off.svg" alt="Показать пароль" class="toggle-password"
                         id="togglePassword2">
                     <div class="field-error" id="confirmError"></div>
