@@ -7,6 +7,11 @@ if (empty($_SESSION['user_id'])) {
     exit;
 }
 
+if ($_SESSION['role'] === 'admin') {
+    header("Location: index.php");
+    exit;
+}
+
 $db = new Database();
 $conn = $db->getConnection();
 

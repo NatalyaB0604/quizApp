@@ -34,19 +34,21 @@ if (isset($_SESSION['user_id'])) {
         <div class="profile-wrapper">
             <button class="profile-btn notification" id="profileBtn">
                 <img src="assets/images/account_circle.svg" alt="Профиль">
-                <?php if ($unread_count > 0): ?>
+                <?php if ($unread_count > 0 && $_SESSION['role'] !== 'admin'): ?>
                     <span class="badge"><?php echo $unread_count; ?></span>
                 <?php endif; ?>
             </button>
             <ul class="dropdown" id="profileDropdown">
                 <li><a href="profile.php">Личный кабинет</a></li>
-                <li class="header-notification-item">
-                    <a href="notifications.php">Уведомления
-                        <?php if ($unread_count > 0): ?>
-                            <span class="dropdown-badge"><?php echo $unread_count; ?></span>
-                        <?php endif; ?>
-                    </a>
-                </li>
+                <?php if ($_SESSION['role'] !== 'admin'): ?>
+                    <li class="header-notification-item">
+                        <a href="notifications.php">Уведомления
+                            <?php if ($unread_count > 0): ?>
+                                <span class="dropdown-badge"><?php echo $unread_count; ?></span>
+                            <?php endif; ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <?php if ($_SESSION['role'] === 'admin'): ?>
                     <li><a href="moderation.php">Модерация</a></li>
                 <?php else: ?>
