@@ -29,9 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION["username"] = $user["username"];
         $_SESSION["role"] = $user["role"];
 
-        /*header("Location: profile.php");
-        exit;*/
-
         if (isset($_SESSION['redirect_after_login'])) {
             $quiz_code = $_SESSION['redirect_after_login'];
             unset($_SESSION['redirect_after_login']);
