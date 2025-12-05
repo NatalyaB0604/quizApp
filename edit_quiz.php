@@ -121,13 +121,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
     }
 
     if ($is_public) {
-        // Проверяем существование записи в модерации
         $check_stmt = $conn->prepare("SELECT id FROM quiz_moderation WHERE quiz_id = ?");
         $check_stmt->execute([$quiz_id]);
         $exists = $check_stmt->fetch();
 
         if ($exists) {
-            // Обновляем существующую запись
             $mod_stmt = $conn->prepare("
                 UPDATE quiz_moderation
                 SET status = 'pending', admin_comment = NULL, moderated_by = NULL, moderated_at = NULL, created_at = NOW()
@@ -135,7 +133,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
             ");
             $mod_stmt->execute([$quiz_id]);
         } else {
-            // Создаем новую запись
             $mod_stmt = $conn->prepare("
                 INSERT INTO quiz_moderation (quiz_id, status, created_at)
                 VALUES (?, 'pending', NOW())
@@ -143,15 +140,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
             $mod_stmt->execute([$quiz_id]);
         }
 
-        // Обновляем статус модерации в основной таблице
         $update_stmt = $conn->prepare("UPDATE quizzes SET moderation_status = 'pending' WHERE id = ?");
         $update_stmt->execute([$quiz_id]);
     } else {
-        // Для приватных викторин автоматически одобряем
         $update_stmt = $conn->prepare("UPDATE quizzes SET moderation_status = 'approved' WHERE id = ?");
         $update_stmt->execute([$quiz_id]);
 
-        // Удаляем запись модерации, если она есть
         $delete_stmt = $conn->prepare("DELETE FROM quiz_moderation WHERE quiz_id = ?");
         $delete_stmt->execute([$quiz_id]);
     }
@@ -793,13 +787,6 @@ foreach ($questions as $q) {
                 });
 
                 const result = await response.json();
-
-                /*if (result.success) {
-                    alert('Викторина успешно обновлена! Код доступа: ' + result.access_code);
-                    window.location.href = 'my_quizzes.php';
-                } else {
-                    alert('Ошибка: ' + result.error);
-                }*/
 
                 if (result.success) {
 
