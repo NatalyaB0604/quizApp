@@ -28,7 +28,7 @@
   padding: 15px 30px;
   background: #e0e0e0;
   border-radius: 20px 20px 0 0;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text-dark);
   cursor: pointer;
@@ -57,7 +57,7 @@
   color: white;
   border-radius: 50%;
   padding: 2px 6px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .quizzes-list {
@@ -86,13 +86,13 @@
 .quiz-header h3 {
   margin: 0;
   color: var(--primary);
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .quiz-status {
   padding: 6px 12px;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 0.87rem;
   font-weight: 600;
 }
 
@@ -125,7 +125,7 @@
 
 .quiz-info p {
   margin: 0;
-  font-size: 14px;
+  font-size: 0.87rem;
   color: var(--text-dark);
 }
 
@@ -156,7 +156,7 @@
   border-radius: 20px;
   cursor: pointer;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 0.87rem;
   font-weight: 500;
   display: inline-flex;
   align-items: center;
@@ -239,7 +239,7 @@
   border: 1px solid #ddd;
   border-radius: 12px;
   resize: none;
-  font-size: 15px;
+  font-size: 0.93rem;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
@@ -259,7 +259,7 @@
   text-align: center;
   padding: 60px 20px;
   color: #666;
-  font-size: 18px;
+  font-size: 1.125rem;
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -269,7 +269,7 @@
   color: var(--primary);
   text-align: center;
   margin-bottom: 30px;
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 
 .template-comments {
@@ -283,7 +283,7 @@
 .custom-select-wrapper {
   position: relative;
   width: 100%;
-  font-size: 15px;
+  font-size: 0.93rem;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   letter-spacing: normal;
@@ -307,7 +307,7 @@
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 12px;
+  font-size: 0.75rem;
   text-shadow: none;
 }
 

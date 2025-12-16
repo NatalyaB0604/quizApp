@@ -45,7 +45,7 @@ input[type="submit"] {
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
   border-radius: 20px;
   transition: background-color 0.3s, transform 0.2s;
 }
@@ -63,5 +63,5 @@ textarea {
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 1rem;
 }

@@ -16,7 +16,7 @@
   padding: 15px 30px;
   background: #e0e0e0;
   border-radius: 20px 20px 0 0;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text-dark);
   cursor: pointer;
@@ -47,7 +47,7 @@
 .quiz-section-title {
   color: var(--primary);
   margin-bottom: 25px;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
@@ -55,7 +55,7 @@
   margin-top: 0;
   color: var(--primary);
   margin-bottom: 20px;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 500;
 }
 
@@ -83,7 +83,7 @@
   padding: 12px 14px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 0.93rem;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   letter-spacing: normal;
@@ -95,7 +95,7 @@
   padding: 0 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 0.93rem;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   letter-spacing: normal;
@@ -124,7 +124,7 @@
 }
 
 .quiz-input-group label {
-  font-size: 15px;
+  font-size: 0.93rem;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   letter-spacing: normal;
@@ -152,7 +152,7 @@
 }
 
 .char-counter {
-  font-size: 15px;
+  font-size: 0.93rem;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   text-align: right;
@@ -161,7 +161,7 @@
 }
 
 .settings-section p {
-  font-size: 15px;
+  font-size: 0.93rem;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   letter-spacing: normal;
@@ -193,7 +193,7 @@
 
 .time-setting label {
   display: block;
-  font-size: 15px;
+  font-size: 0.93rem;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   text-align: center;
@@ -205,7 +205,7 @@
   padding: 12px 14px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 0.93rem;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   transition: border-color 0.3s ease;
@@ -282,7 +282,7 @@
 }
 
 .question-type {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #666;
   background: #e9ecef;
   padding: 2px 8px;
@@ -290,7 +290,7 @@
 }
 
 .question-preview {
-  font-size: 13px;
+  font-size: 0.81rem;
   color: #666;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -313,13 +313,13 @@
 .question-header h3 {
   color: var(--primary);
   margin: 0;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .custom-select-wrapper {
   position: relative;
   width: 100%;
-  font-size: 15px;
+  font-size: 0.93rem;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   letter-spacing: normal;
@@ -342,7 +342,7 @@
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 12px;
+  font-size: 0.75rem;
   text-shadow: none;
 }
 
@@ -404,13 +404,13 @@
 .answers-title {
   font-weight: 600;
   color: var(--primary);
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .correct-label {
   font-weight: 600;
   color: var(--primary);
-  font-size: 14px;
+  font-size: 0.87rem;
 }
 
 .answer-option {
@@ -429,7 +429,7 @@
   border: none;
   background: transparent;
   padding: 8px 0;
-  font-size: 14px;
+  font-size: 0.87rem;
 }
 
 .answer-option input[type="text"]:focus {
@@ -445,7 +445,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 0.81rem;
   color: #666;
 }
 
@@ -497,7 +497,7 @@
   padding: 12px 20px;
   border: none;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
   transition: all 0.3s ease;
   text-decoration: none;
   display: inline-flex;
@@ -533,7 +533,7 @@
 .save-btn {
   background-color: var(--accent);
   color: var(--text-dark);
-  font-size: 16px;
+  font-size: 1rem;
   border-radius: 20px;
   padding: 10px 20px;
   transition: all 0.3s ease;
@@ -552,7 +552,7 @@
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 0.93rem;
   transition: background-color 0.3s ease;
 }
 
@@ -567,7 +567,7 @@
   padding: 10px 20px;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.87rem;
   margin-top: 10px;
   transition: background-color 0.3s ease;
 }

@@ -12,7 +12,7 @@ header {
 }
 
 .logo {
-  font-size: 26px;
+  font-size: 1.6rem;
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
@@ -31,7 +31,7 @@ nav ul {
 nav a {
   color: var(--text-light);
   text-decoration: none;
-  font-size: 16px;
+  font-size: 1rem;
   transition: color 0.3s;
 }
 
@@ -131,7 +131,7 @@ a.login-btn:hover {
   border-radius: 50%;
   background: red;
   color: white;
-  font-size: 12px;
+  font-size: 0.75rem;
   min-width: 20px;
   text-align: center;
 }
@@ -148,7 +148,7 @@ a.login-btn:hover {
   color: white;
   border-radius: 50%;
   padding: 2px 6px;
-  font-size: 12px;
+  font-size: 0.75rem;
   min-width: 18px;
   text-align: center;
 }

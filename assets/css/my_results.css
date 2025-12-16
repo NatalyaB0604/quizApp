@@ -11,7 +11,7 @@
 
 .results-title {
   font-family: "Dela Gothic One", sans-serif;
-  font-size: 24px;
+  font-size: 1.5rem;
   margin-bottom: 10px;
   color: var(--primary);
 }
@@ -54,7 +54,7 @@
   align-items: center;
   color: var(--text-dark);
   white-space: nowrap;
-  font-size: 15px;
+  font-size: 0.93rem;
 }
 
 .vertical-bar {
@@ -64,7 +64,7 @@
 
 .result-title {
   margin: 0;
-  font-size: 19px;
+  font-size: 1.18rem;
   font-weight: 600;
   color: var(--secondary);
   overflow: hidden;
@@ -74,14 +74,14 @@
 
 .result-score,
 .result-time-spent {
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--text-dark);
   text-align: center;
 }
 
 .result-score strong {
   color: var(--accent);
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .view-details-btn {
@@ -106,7 +106,7 @@
   color: #666;
   background-color: var(--bg2);
   border-radius: 20px;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 @media (max-width: 992px) {

@@ -18,7 +18,7 @@
 
 .login-box h2 {
   color: var(--primary);
-  font-size: 28px;
+  font-size: 1.75rem;
   margin-top: 0;
 }
 
@@ -31,7 +31,7 @@
   padding: 12px 14px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 0.93rem;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   transition: border-color 0.3s ease;
@@ -43,7 +43,7 @@
 
 .register-link {
   margin-top: 15px;
-  font-size: 14px;
+  font-size: 0.87rem;
   color: var(--text-dark);
 }
 
@@ -58,7 +58,7 @@
 .error-msg {
   color: red;
   margin-bottom: 10px;
-  font-size: 14px;
+  font-size: 0.87rem;
 }
 
 .password-group {
@@ -102,7 +102,7 @@
 
 .field-error {
   color: red;
-  font-size: 11px;
+  font-size: 0.68rem;
   text-align: left;
   opacity: 0;
   transform: translateY(-3px);
